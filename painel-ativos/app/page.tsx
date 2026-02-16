@@ -1,49 +1,56 @@
-import AtivoCard from "./components/AtivoCard";
-import CadastroAtivo from "./components/CadastroAtivo";
-import Educativo from "./components/Educativo";
-import { getAtivos } from "./lib/getAtivos";
+"use client";
 
-export default async function Home() {
-  const ativos = await getAtivos();
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function Home() {
+  const [ticker, setTicker] = useState("");
+  const router = useRouter();
+
+  function buscar() {
+    if (!ticker) return;
+    router.push(`/ativo/${ticker.toUpperCase()}`);
+  }
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#0b0f19",
-        padding: "40px",
-        fontFamily: "sans-serif"
-      }}
-    >
-      <h1
+    <main style={{
+      background: "#0b0f19",
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      color: "white"
+    }}>
+      <h1>Consultor de Ativos 📈</h1>
+
+      <input
+        placeholder="Digite o ticker (ex: PETR4)"
+        value={ticker}
+        onChange={e => setTicker(e.target.value)}
         style={{
-          color: "white",
-          fontSize: "32px",
-          marginBottom: "20px"
+          padding: 12,
+          fontSize: 18,
+          borderRadius: 8,
+          border: "none",
+          marginTop: 20
+        }}
+      />
+
+      <button
+        onClick={buscar}
+        style={{
+          marginTop: 15,
+          padding: "10px 20px",
+          fontSize: 16,
+          borderRadius: 8,
+          background: "#22c55e",
+          border: "none",
+          cursor: "pointer"
         }}
       >
-        Painel Fundamentalista
-      </h1>
-
-      {/* Cadastro */}
-      <CadastroAtivo />
-
-      {/* Bloco educativo */}
-      <Educativo />
-
-      {/* Grid de ativos */}
-      <div
-        style={{
-          display: "grid",
-          gap: "20px",
-          marginTop: "30px",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))"
-        }}
-      >
-        {ativos.map((a: any) => (
-          <AtivoCard key={a.ticker} ativo={a} />
-        ))}
-      </div>
+        Analisar
+      </button>
     </main>
   );
 }
