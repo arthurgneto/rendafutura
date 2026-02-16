@@ -1,56 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { buscarTicker } from "./lib/yahooClient";
 
 export default function Home() {
   const [ticker, setTicker] = useState("");
-  const router = useRouter();
+  const [dados, setDados] = useState<any>(null);
 
-  function buscar() {
-    if (!ticker) return;
-    router.push(`/ativo/${ticker.toUpperCase()}`);
+  async function consultar() {
+    const r = await buscarTicker(ticker.toUpperCase());
+    setDados(r);
   }
 
   return (
-    <main style={{
-      background: "#0b0f19",
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      color: "white"
-    }}>
-      <h1>Consultor de Ativos 📈</h1>
+    <main style={{ padding: 40 }}>
+      <h1>Consultor de Ativos</h1>
 
       <input
-        placeholder="Digite o ticker (ex: PETR4)"
+        placeholder="Digite PETR4"
         value={ticker}
-        onChange={e => setTicker(e.target.value)}
-        style={{
-          padding: 12,
-          fontSize: 18,
-          borderRadius: 8,
-          border: "none",
-          marginTop: 20
-        }}
+        onChange={(e) => setTicker(e.target.value)}
       />
 
-      <button
-        onClick={buscar}
-        style={{
-          marginTop: 15,
-          padding: "10px 20px",
-          fontSize: 16,
-          borderRadius: 8,
-          background: "#22c55e",
-          border: "none",
-          cursor: "pointer"
-        }}
-      >
-        Analisar
-      </button>
+      <button onClick={consultar}>Consultar</button>
+
+      {dados && (
+        <pre style={{ marginTop: 20 }}>
+          {JSON.stringify(dados, null, 2)}
+        </pre>
+      )}
     </main>
   );
 }
