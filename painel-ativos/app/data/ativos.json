@@ -1,0 +1,26 @@
+[
+  {
+    "ticker": "PETR4",
+    "fundamentos": {
+      "pl": 6,
+      "dy": 12,
+      "roe": 25,
+      "divida": 1.2,
+      "margem": 18
+    }
+  },
+  {
+    "ticker": "VALE3",
+    "fundamentos": {
+      "pl": 10,
+      "dy": 5,
+      "roe": 15,
+      "divida": 2,
+      "margem": 10
+    }
+  },
+  
+  {
+    "ticker": "MTRE3"
+  }
+]
